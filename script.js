@@ -518,28 +518,12 @@ const cleanupAnimations = () => {
 // Cleanup on page unload
 window.addEventListener('beforeunload', cleanupAnimations);
 
-// Enhanced PDF opening function with error handling
-function openPDF(pdfPath) {
-    try {
-        // Create a full URL for the PDF
-        const fullPdfUrl = window.location.origin + '/' + pdfPath;
-        
-        // Open in new tab with better browser compatibility
-        const pdfWindow = window.open(fullPdfUrl, '_blank');
-        
-        // Check if popup was blocked
-        if (!pdfWindow || pdfWindow.closed || typeof pdfWindow.closed == 'undefined') {
-            // If popup blocked, try alternative method
-            const link = document.createElement('a');
-            link.href = fullPdfUrl;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-    } catch (error) {
-        console.error('Error opening PDF:', error);
-        alert('Unable to open PDF. Please check if the file exists.');
-    }
+// PDF download function
+function downloadPDF(pdfPath) {
+    const link = document.createElement('a');
+    link.href = pdfPath;
+    link.download = pdfPath.split('/').pop(); // Dosya adını ayarlar
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
